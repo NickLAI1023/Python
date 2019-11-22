@@ -8,3 +8,54 @@ in order to get how many be substituted
 re.subn(original pattern, target parttern, str)
 and we can simply print n to get the number
 
+if we want to search or replace words ignoring the case, we need to apply the re.ignorecase flag in functions
+re.findall(target, str, flag = re.ignorecase)
+re.sub(original pattern, target pattern, str, flag = re.ignorecase)
+* we can also define our personal pattern for the target pattern to make it more complex
+
+searching shortest match with regular expression
+the regular expression would try to find the longest the match in a string.
+pat = re.compile(r'\"(.*)\"') would find the longest match
+we can add a ? after * to let it find the shortest pattern
+pat = re.compile(r'\"(.*?)\"')
+* the dot here matches all characters except newlines.
+
+if we want to match a block of context
+we can use a flag re.dotall in re.compile
+re.compile(pattern, re.dotall)
+but if it goes too complicated, we should use another case.
+pat = re.compile(r'/\*((?:.|\n)*?)\*/')
+here we use (?:.|\n) to fix the ignorance of newlines
+
+unicode normalization
+sometimes we use different unicode to express a some word, but it could lead to a matching problem when we are comparing both.
+import unicodedata
+t1 = unicodedata.normalization("NFC", s1)
+t2 = unicodedata.normalization("NFC", s2)
+then we can compare t1 and t2
+NFC is a pattern represent one way of normalization, we could also implement NFD, NFKC, or NFKD.
+* this is a big topic, and we need to find it more.
+
+strip unwanted characters
+we use strip / lstrip / rstrip to remove characters
+the strip method defaultly removes whitespeces, but we can define inside of quotes.
+str.strip("-=")
+if we want to remove the inner characters, we need to find other solutions, like re.sub or str.replace
+
+align text
+we can use ljust() / rjust() / center to align a string
+text.ljust("*")
+but if we would like to align other objects like list, we need to use format.
+format(text, ">20"), it means we align it left, we can also use < or ^ to align text differnetly
+* most of the case, we should use format as it is more flexible
+
+combining and concatenating strings
+the fastest way to do it is using join()
+' '.join(list)
+the simplest way is using a "+" operator, but it could be slower
+we can also implement generator expression
+','.join(str(d) for d in data)
+to print a combined string, we can write print(a, b, c, sep = ',')
+
+
+
