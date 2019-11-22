@@ -1,0 +1,10 @@
+searching and replacing
+- simple literal patterns
+str.replace(origin, substitute)
+- complex patterns like date substitution
+import re
+re.sub(original pattern, target pattern, str)
+in order to get how many be substituted
+re.subn(original pattern, target parttern, str)
+and we can simply print n to get the number
+
