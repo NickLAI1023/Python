@@ -90,3 +90,5 @@ import textwrap
 print(textwrap.fill(str, 40))
 we can decide how many words in a row
 and we could also have some attributes to control more in detail, like initial_indent, subsequent_indent
+
+numpy中数组切片是在原始视图上面操作，而不是复制一个新的数组
