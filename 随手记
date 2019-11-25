@@ -57,5 +57,36 @@ we can also implement generator expression
 ','.join(str(d) for d in data)
 to print a combined string, we can write print(a, b, c, sep = ',')
 
+interpolate variables in string
+method 1: format
+str = "{name} has {n} messages"
+str.format(name = "Hongyi", n = 36)
 
+method 2: format_map
+if the values of all the variables could be found, we can simply implement format_map() and vars()
+str.format_map(vars())
 
+note: avoid missing values
+define a missing method
+*
+class safesub(dict):
+def __missing__(self, key):
+  rerurn "{" + key + "}"
+*
+then implement it as:
+str.format_map(safesub(vars()))
+
+if we use the variable frequently, we can use a method as below:
+import sys
+def sub(text):
+  return text.format_map(safesub(sys._getframe(1), f_locals))
+then we can use it like:
+print(sub("Hello {name}"))
+print(sub("you have {n} messages"))
+
+reformat text
+imagine we have a long string
+import textwrap
+print(textwrap.fill(str, 40))
+we can decide how many words in a row
+and we could also have some attributes to control more in detail, like initial_indent, subsequent_indent
