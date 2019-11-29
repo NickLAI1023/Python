@@ -1,0 +1,54 @@
+SQL分类：
+DDL：Data Definition Language，数据定义语言，数据库对象定义，常用关键字包括create, drop, alter等
+DML：Data Manipulation Language， 数据操纵语言，用于增删改查，检查数据完整性，常用关键字包括insert, delete, update, 和 select等
+DCL：Data Control Language，数据控制语言，定义访问权限和安全级别，主要关键字包括grant, revoke等
+
+DDL语句
+连接数据库：mysql -uroot -p
+创建数据库：create database [dbname]
+查看数据库：show databases
+选择要操作的数据库：use [dbname]
+查看数据表：show tables
+删除数据库：drop database [dbname]
+创建表：create table [tablename](column_name column_type_constraints,...)
+   >这里可以一次添加多个数据列
+查看数据表信息：desc [tablename]，更完整的查看表信息可以使用: show create table [tablename]
+删除表：drop table [tablename]
+修改表：
+      >修改表类型：alter table [tablename] modify [column_name] [column_type_coustraints] first/after [column_name]
+      >增加表字段：alter table [tablename] add column [column_name] [column_type_constraints] first/after [column_name]
+      >删除表字段：alter table [tablename] drop column [column_name]
+      >修改字段名：alter table [tablename] change [old_column_name] [new_column_name] [column_type_constraints] first/after [column_name]
+      change和modify都可以修改表的类型，但是change方法需要写两次表的名称
+      >修改字段顺序：在ADD, MODIFY, CHANGE语法的最后面可以添加first/after [column_name]来确定列的顺序
+      chenge，first，after都是SQL的命令的延伸，因此并不一定在所有地方都适用
+      >修改表名称：alter table [tablename] rename [new_tablename]
+      
+DML语句
+插入记录：insert into [tablename] (column_names) values (values)
+*插入记录可以不指定字段名称，但是value的顺序必须和字段的排列顺序保持一致
+*对于可空字段，非空但有默认值，以及自增字段可以不在其中出现
+*insert语句可以一次插入多条记录：insert into [tablename] (column_names) values (values), (values), (values);
+更新记录：update [tablename] set [column_name]=[value] where [condition]
+*update语句支持一次修改多个数据表中的数据：update [tablename] [tablename_code], [tablename] [tablename_code] set [tablename].[column_name]=[value], [tablename].[column_name]=[value] where [condition]
+*多表更新的语法更多的用在了根据一个表的字段，来动态更新另外一个表的字段
+删除记录：delete from [tablename] where [condition]
+*delete可以一次删除多个表的数据：delete [tablename_code], [tablename_code] from [tablename] [tablename_code], [tablename] [tablename_code] where [condition]
+*delete语句若是没有添加where条件，则会删除整一个表
+查询记录
+      >全部查询：select * from [tablename] where [condition]
+      >部分查询：select [column_name], [column_name] from [tablename] where [condition]
+      >去重查询：添加关键字"distinct"，select distinct [column_names] from [tablename] where [condition]
+      *where 中的条件可以是 =, !=, >=, <=, <, >, 多个条件可以使用or, and等逻辑运算符联合查询
+      >排序和限制：select [column_names] from [tablename] where [condition] order by [column_name] desc/asc, [column_name] desc / asc
+      *默认为升序asc
+      >查询结果部分显示：使用limit关键字：select ... limit [offset_start], [row_count]
+      *offset_start是偏移量，默认为0
+      *limit经常和order by一起配合使用来进行记录的分页显示
+      *limit是MySQL在SQL上的延申，因此在别的数据库上不能通用
+      >聚合汇总：select [fields] [function] from [tablename] where [condition] group by [fields] with rollup having [condition]
+      *function中我们有sum, count, max, min函数
+      *group by是我们要聚合的字段
+      *with rollup是可选的，表示我们是否要对分类聚合后的结果进行再汇总
+      *having是对分类后的结果再过滤
+      *having和where的区别在于having是聚合后的再过滤，通常我们都会选择先用where过滤
