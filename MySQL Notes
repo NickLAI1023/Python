@@ -59,3 +59,19 @@ DML语句
       >记录联合：select ... union / union all select ...
       *将两个搜索结果合并一起显示，其中union all是直接将结果合并，而union是对union all的结果进行一次distinct的去重操作
       
+数据类型
+*MySQL数据类型分类：数值型、字符串类型、日期和时间类型
+
+数值类型
+*严格数值类型：integer, tinyint, smallint, mediumint, bigint, decimal, numeric, bit
+*近似数值类型：float, real, double precision
+*整数类型参数：
+   >zerofill, 在数值前用0填充剩余字符
+   >auto_increment, 一个表最多只能有一个列， 并且该列应该定义为not null, 并且定义为primary key 或者 unique
+*浮点数：float 和 double, 可以添加精度和标度，若是没有添加，则按照实际精度显示
+*定点数：double, 没有添加精度则按照默认的（10，0）进行操作，溢出即报错
+*bit类型的需要使用bit()或者hex()函数进行读取
+   
+   
+   
+   
