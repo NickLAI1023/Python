@@ -52,3 +52,10 @@ DML语句
       *with rollup是可选的，表示我们是否要对分类聚合后的结果进行再汇总
       *having是对分类后的结果再过滤
       *having和where的区别在于having是聚合后的再过滤，通常我们都会选择先用where过滤
+      >表连接：分为外连接和内连接，平时我们使用内连接比较多，内连接能够查找出两个表的共同匹配项，而外连接还会显示不匹配的项
+      >子查询：查询所需要的条件是另一个查询，关键字包含in, not in, =, !=, exists, not exists
+      >例子：select ... in(select ...)
+      *表连接在很多情况下优化子查询
+      >记录联合：select ... union / union all select ...
+      *将两个搜索结果合并一起显示，其中union all是直接将结果合并，而union是对union all的结果进行一次distinct的去重操作
+      
