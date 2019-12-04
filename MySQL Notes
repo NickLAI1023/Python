@@ -159,3 +159,109 @@ RAND() 返回0到1的随机值
 ROUND(x，y) 返回x四舍五入有y位小数的值，整数则保留y位的0，默认y等于0
 TRUNCAT(x，y) 截断数字x保留y位小数的值，与ROUND不同的是不进行四舍五入
 
+日期函数
+CURDATE() 返回当前日期
+CURTIME() 返回当前时间
+NOW() 返回当前时间及日期
+UNIX_TIMESTAMP(date) 返回date的UNIX时间戳
+FROM_UNIXTIME(unixtime) 返回unixtime时间戳对应的日期
+WEEK(date) 返回当前是一年的第几周
+YEAR(date) 返回date所给的是那一年
+HOUR(time) 和 MINUTE(time) 返回time所对应的小时和分钟
+MONTHNAME(date) 返回date的月份
+DATE_FORMAT(date，fmt) 按照fmt格式化日期date
+*格式符
+   格式符 格式说明
+   %S,%s 两位数字形式的秒（00,01,...,59）
+   %i 两位数字形式的分（00,01,...,59）
+   %H 两位数字形式的小时，24 小时（00,01,...,23）
+   %h,%I 两位数字形式的小时，12 小时（01,02,...,12）
+   %k 数字形式的小时，24 小时（0,1,...,23）
+   %l 数字形式的小时，12 小时（1,2,...,12）
+   %T 24 小时的时间形式（hh:mm:ss）
+   %r 12 小时的时间形式（hh:mm:ssAM 或hh:mm:ssPM）
+   %p AM 或PM
+   %W 一周中每一天的名称（Sunday,Monday,...,Saturday）
+   %a 一周中每一天名称的缩写（Sun,Mon,...,Sat）
+   %d 两位数字表示月中的天数（00,01,...,31）
+   %e 数字形式表示月中的天数（1,2，...,31）
+   %D 英文后缀表示月中的天数（1st,2nd,3rd,...）
+   %w 以数字形式表示周中的天数（0=Sunday,1=Monday,...,6=Saturday）
+   %j 以3 位数字表示年中的天数（001,002,...,366）
+   %U 周（0,1,52），其中Sunday 为周中的第一天
+   %u 周（0,1,52），其中Monday 为周中的第一天
+   %M 月名（January,February,...,December）
+   %b 缩写的月名（January,February,...,December）
+   %m 两位数字表示的月份（01,02,...,12）
+   %c 数字表示的月份（1,2,...,12）
+   %Y 4 位数字表示的年份
+   %y 两位数字表示的年份
+   %% 直接值“%”
+DATE_ADD(date，INTERVAL expr type) 返回所给date相差interval时间段的日期，INTERVAL是间隔关键字，expr是表达式，type是间隔类型
+*MySQL中的间隔类型
+   表达式类型 描述 格式
+   HOUR 小时 hh
+   MINUTE 分 mm
+   SECOND 秒 ss
+   YEAR 年 YY
+   MONTH 月 MM
+   DAY 日 DD
+   YEAR_MONTH 年和月 YY-MM
+   DAY_HOUR 日和小时 DD hh
+   DAY_MINUTE 日和分钟 DD hh:mm
+   DAY_ SECOND 日和秒 DD hh:mm:ss
+   HOUR_MINUTE 小时和分 hh:mm
+   HOUR_SECOND 小时和秒 hh:ss
+   MINUTE_SECOND 分钟和秒 mm:ss
+DATEDIFF(date1，date2) 计算两个时间之间相差的天数
+
+流程函数
+IF(value，t，f) value为真返回t，否则返回f
+IFNULL(value1，value2) 常用来替换NULL值，因为NULL不能用来运算
+CASE WHEN [value] THEN [result]...ELSE [default] END
+
+其他常用函数
+DATABASE() 返回当前数据库名
+VERSION() 返回当前数据库版本
+USER() 返回当前登录用户名
+INET_ATON(IP) 返回IP地址的网络字节序表示
+INET_NTOA(num) 返回网络字节序代表的IP地址
+PASSWORD(str) 返回str的加密版本，这个函数只用来设置系统用户的密码，但是不能用来对数据的加密，数据的加密一般使用MD5等加密函数
+MD5(str) 返回字符串str的MD5值
+
+表类型（存储引擎）的选择
+*插件式存储引擎是MySQL数据库最重要的特性之一，用户可以定制和使用自己的引擎
+>查看当前的默认存储引擎：show variables like 'table_type'
+>查询当前数据库支持的存储引擎：show engines \g 或者 show variables like 'have%'
+>创建表时设置存储引擎：create table [tablename] (...) engine=[enginename] default charset=gbk
+>修改存储引擎：alter table [tablename] engine=[new_enginename]
+
+MyISAM
+*MySQL的默认引擎，不支持事务，也不支持外键，优点时访问速度快，以SELECT和INSERT为主的应用可以使用这个引擎
+*磁盘上存储成三个文件：.frm(存储表定义)，.MYD(存储数据)，.MYI(存储索引)，数据文件和索引文件放在不同的目录，平均分布IO，可以获得更快的速度
+*支持三种不同的存储格式：静态表，动态表，压缩表
+*静态表：都是非变长字段，优点是存储迅速，容易缓存，故障易修复，缺点是占用空间会比较多
+*动态表：包含变长字段，优点是占用的空间较少，缺点是频繁更新删除记录会产生碎片，需要定期 OPTIMIZE TABLE或myisamchk -r来改善性能，出现故障难修复
+*压缩表：每个记录被单独压缩，占用非常小的磁盘空间
+
+InnoDB
+*提供具有提交、回滚和崩溃恢复能力的事务安全，相比MyISAM在写的处理上差，并且占用更多磁盘空间以保留数据和索引
+*可手动插入自动增长列，无论插入什么值，显示的都是自动增长后的结果
+*自动增长列必须是索引，如果是组合索引，自动增长列也必须是第一列
+*MySQL支持外键的唯一存储引擎
+*创建外键时要求父表必须有对应的索引，字表在创建外键的时候也会自动创建对应的索引
+*在创建索引的时候，可以指定在删除、更新父表时，对子表的相应操作
+   >RESTRICT和NO ACTION相同，是指限制在字表有关联记录的情况下父表不能更新
+   >CASCADE表示父表在更新或者删除时，更新或者删除子表对应记录
+   >SET NULL表示在父表更新或者删除时，子表的对应字段被SET NULL
+*当某个表被其他表创建了外键参照，那么该表对应索引或者主键禁止被删除
+*若想暂时关闭外键的检查，可以使用SET FOREIGN_KEY_CHECKS = 0，执行完毕后在SET为1即可
+*外键信息可以通过show create table 或者 show table status显示
+*存储方式：
+   >共享表空间存储，表结构保存在.frm中，数据和索引保存在innodb_data_home_dir和innodb_data_file_path定义的表空间中，可以是多个文件
+   >多表空间存储，表结构保存在.frm中，每个表的数据和索引单独保存在.ibd中，需要设置参数innodb_file_per_table，重新启动服务后生效。五数据文件大小限制，无需设置初始大小，无需设置文件的最大限制、扩展大小等参数。可以方便地进行单表备份和恢复操作，但是不能直接赋值.ibd和.frm文件，需要通过命令：
+   alter table [tablename] discard tablespace
+   alter table [tablename] import tablespace
+   这样可以恢复到原来的数据库中，要复制到目标数据库需要通过mysqldump和mysqlimport来实现
+*即使时多表空间存储，共享表空间也是必须的，InnoDB把内部数据词典和未作日志放在这个文件中
+   
