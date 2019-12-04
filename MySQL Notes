@@ -136,4 +136,26 @@ xor 逻辑异或
 将操作数转换为二进制之后，对每一位进行制定的逻辑运算，最后得出结果
 &, |, ^ 位异或, ~ 位取反, >> 位右移, << 位左移
 
+常用函数
+字符串函数
+CONCAT(S1, S2, ...) 字符串连接，若有一个NULL，连接时结果都将时NULL
+INSERT(str, x, y, instr) 将字符串str从x开始，y个字符长的子串替换为instr
+LOWER()和UPPER()
+LEFT(str，x)和RIGHT(str，x) 返回字符串str左边或右边的x个字符，若x为NULL，则不返回任何值
+LPAD(str，n，pad)和RPAD(str，n，pad) 用pad对字符串str最左边或者最右边进行填充，直到字符串长度为n为止
+LTRIM(str)和RTRIM(str) 去掉左边或者右边的空格
+REPEAT(str，x) 将字符串str重复x次返回结果
+REPLACE(str，a，b) 用字符串b替换str中所有出现的字符串a
+STRCAM(s1，s2) 比较字符串ASCII码大小，小于则为-1，相等为0，大于为1
+TRIM(str) 去掉左右两侧的空格
+SUBSTRING(str，x，y) 返回str从x开始的y个字符长度的子串
+
+数值函数
+ABS() 返回绝对值
+CEIL(x) 返回大于x的最小整数
+FLOOR(x) 返回小于x的最大整数
+MOD(x，y) 模函数
+RAND() 返回0到1的随机值
+ROUND(x，y) 返回x四舍五入有y位小数的值，整数则保留y位的0，默认y等于0
+TRUNCAT(x，y) 截断数字x保留y位小数的值，与ROUND不同的是不进行四舍五入
 
