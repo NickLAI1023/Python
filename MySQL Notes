@@ -72,6 +72,68 @@ DML语句
 *定点数：double, 没有添加精度则按照默认的（10，0）进行操作，溢出即报错
 *bit类型的需要使用bit()或者hex()函数进行读取
    
+日期时间类型
+>Date：用来表示年月日
+>Datetime：用来表示年月日 时分秒
+>Time：用来表示时分秒
+>Timestamp：需要经常插入或更新日期为当前系统时间（根据时区不同会有所不同），创建对象时系统自动创建默认值current_timestamp，但是只有表中的第一个有这个属性，其余默认值设置为0，
+>Year：用来表示年份
+*now函数可以插入当前日期：insert into t values(now(), now(), now())
+*Timestamp 和 Datetime的区别：
+   Timestamp支持的时间范围比较小
+   表中第一个Timestamp列默认设置为当前日期和时间
+   Timestamp插入和查询显示的日期和时间都会受时区的影响，Datetime只反应插入时当地的时区
    
+字符串类型
+char和varchar类型：
+*都用来保存较短的字符串
+*char固定为创建表时声明的长度，varchar为可变长字符串
+*检索时，char默认删除尾部的空格，varchar会保留空格
+
+binary和varbinary与char和varchar类似，不同的是他们包含的是二进制字符串而不是非二进制
+
+enum枚举类型
+*忽略大小写
+*插入非指定范围内的值则会显示第一个值
+*一次只能取一个值
    
-   
+set类型
+*与enum类型类似
+*单次可以取一个或者多个值
+*不在范围内的值不允许被插入到列中
+*包含重复的集合只取一次，去重写入
+
+运算符
+算术运算符
++, -, *, /, div, %, mod
+除法除数为0，显示为NULL
+
+比较运算符
+=, <>, !=, <=>, <, <=, >, >=, between, in, is null, is not null, like, regexp/ rlike
+NULL不能用 = 来比较
+<=>是安全等于，即使是NULL也可以进行比较
+between的用法，a between min and max
+in的用法，select a in (values)
+like的用法，a like %string%，相似匹配，当a中含有string的字符串时返回1
+regexp的用法，str regexp str_pattern，正则匹配，str中含有str_pattern相匹配的字符串时返回1
+
+逻辑运算符
+not/! 逻辑非
+*not null返回null
+
+and/&& 逻辑与
+*操作数中有一个为NULL则显示为NULL
+
+or/|| 逻辑或
+当有一个操作数为NULL，另一个为1，则显示为1，否则结果为0
+当操作数均为NULL，则显示为NULL
+
+xor 逻辑异或
+有一个NULL则返回NULL
+两个操作数真假相反则结果为1
+
+位运算
+将操作数转换为二进制之后，对每一位进行制定的逻辑运算，最后得出结果
+&, |, ^ 位异或, ~ 位取反, >> 位右移, << 位左移
+
+
